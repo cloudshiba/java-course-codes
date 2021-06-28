@@ -7,6 +7,7 @@
 
 - [Hello class](./java-course-codes/src/main/java/com/cloudshiba/javacoursecodes/bytecode/Hello.java)
 - [Hello bytecode](./java-course-codes/Hello_bytecode.md)
+- [Hello class decompile](./java-course-codes/Hello_decompile.md)
 - [Hello opcode](./java-course-codes/Hello_opcode.md)
 
 ### 作業2
