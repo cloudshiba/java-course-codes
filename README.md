@@ -1,8 +1,5 @@
 # Java Course Codes
 
 ## Week 1
-
-```bash
-git checkout week-01
-```
+[01-jvm](./01-jvm)
 
