@@ -26,15 +26,19 @@
 > （选做）运行课上的例子，以及 Netty 的例子，分析相关现象。
 
 - [HttpServer01](./nio01/src/main/java/java0/nio01/server/HttpServer01.java) 壓測
+
 ![HttpServer01 壓測](./server-demo/server_1.png)
 
-- [HttpServer02](./nio01/src/main/java/java0/nio01/server/HttpServer02.java) 壓測
+- [HttpServer02](./nio01/src/main/java/java0/nio01/server/HttpServer02.java) 壓測 (系統一直重開機所以調低壓測參數)
+
 ![HttpServer02 壓測](./server-demo/server_2.png)
 
 - [HttpServer03](./nio01/src/main/java/java0/nio01/server/HttpServer03.java) 壓測
+
 ![HttpServer03 壓測](./server-demo/server_3.png)
 
 - [NettyHttpServer](./nio01/src/main/java/java0/nio01/server/netty/NettyHttpServer.java) 壓測
+
 ![NettyHttpServer 壓測](./server-demo/netty_server.png)
 
 ### 作業6
