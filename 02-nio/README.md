@@ -30,5 +30,7 @@
 ### 作業6
 > （必做）写一段代码，使用 HttpClient 或 OkHttp 访问  http://localhost:8801 ，代码提交到 GitHub
 
-- 未完成
+- [HttpClient Demo](./nio01/src/main/java/java0/nio01/client/HttpClient1.java)
+
+_ [OkHttp Demo](./nio01/src/main/java/java0/nio01/client/OkHttpClient1.java)
 
