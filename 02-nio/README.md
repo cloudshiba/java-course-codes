@@ -5,7 +5,10 @@
 ### 作業1
 > （选做）使用 GCLogAnalysis.java 自己演练一遍串行 / 并行 /CMS/G1 的案例。
 
-- 未完成
+- [Serial GC Log](./nio01/gc_log/serial_gc.log)
+- [Parallel GC Log](./nio01/gc_log/parallel_gc.log)
+- [CMS GC Log](./nio01/gc_log/cms_gc.log)
+- [G1 GC Log](./nio01/gc_log/g1_gc.log)
 
 ### 作業2
 > （选做）使用压测工具（wrk 或 sb），演练 gateway-server-0.0.1-SNAPSHOT.jar 示例。
@@ -20,7 +23,7 @@
 ### 作業4
 > （必做）根据上述自己对于 1 和 2 的演示，写一段对于不同 GC 和堆内存的总结，提交到 GitHub。
 
-- 未完成
+- [總結](./nio01/gc_log/README.md)
 
 ### 作業5
 > （选做）运行课上的例子，以及 Netty 的例子，分析相关现象。
