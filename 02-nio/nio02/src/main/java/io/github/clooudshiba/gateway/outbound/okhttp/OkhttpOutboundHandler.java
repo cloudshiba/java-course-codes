@@ -1,5 +1,6 @@
 package io.github.clooudshiba.gateway.outbound.okhttp;
 
+import io.github.clooudshiba.gateway.filter.HeaderHttpRequestFilter;
 import io.github.clooudshiba.gateway.filter.HeaderHttpResponseFilter;
 import io.github.clooudshiba.gateway.filter.HttpRequestFilter;
 import io.github.clooudshiba.gateway.filter.HttpResponseFilter;
@@ -40,7 +41,7 @@ public class OkhttpOutboundHandler {
             .build();
 
     HttpEndpointRouter router = new RandomHttpEndpointRouter();
-    HttpResponseFilter filter = new HeaderHttpResponseFilter();
+    HttpResponseFilter responseFilter = new HeaderHttpResponseFilter();
 
     public OkhttpOutboundHandler(List<String> backends) {
         this.backendUrls = UrlUtils.getUrls(backends);
@@ -55,12 +56,15 @@ public class OkhttpOutboundHandler {
     }
 
     private void fetchGet(final FullHttpRequest inbound, final ChannelHandlerContext ctx, final String url) {
+        String headerValue = inbound.headers().get("Shiba-Request");
+        logger.info("custom header: {}", headerValue);
+
         Request request = new Request.Builder()
                 .url(url)
                 .header("User-Agent", "OkHttp")
                 .addHeader(HTTP.CONN_DIRECTIVE, HTTP.CONN_KEEP_ALIVE)
                 .addHeader("Accept", "application/json; q=0.5")
-                .addHeader("Shiba-Request", "Hi")
+                .addHeader("Shiba-Request", headerValue)
                 .build();
         final Call call = client.newCall(request);
 
@@ -104,11 +108,8 @@ public class OkhttpOutboundHandler {
 
             byte[] body = endpointResponse.body().bytes();
             response = new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.wrappedBuffer(body));
-            response.headers().set("Shiba-Response", "OK");
-            response.headers().set("Content-Type", "application/json");
             response.headers().setInt("Content-Length", Integer.parseInt(contentLength));
-
-            filter.filter(response);
+            responseFilter.filter(response);
         } catch (Exception e) {
             e.printStackTrace();
             response = new DefaultFullHttpResponse(HTTP_1_1, NO_CONTENT);
