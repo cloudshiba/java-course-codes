@@ -6,3 +6,6 @@
 ## Week 2
 [02-nio](./02-nio)
 
+## Week 3
+[02-nio/nio02](./02-nio/nio02/)
+
