@@ -1,9 +1,9 @@
 package io.github.clooudshiba.gateway.outbound.okhttp;
 
-import io.github.clooudshiba.gateway.filter.HeaderHttpRequestFilter;
 import io.github.clooudshiba.gateway.filter.HeaderHttpResponseFilter;
 import io.github.clooudshiba.gateway.filter.HttpRequestFilter;
 import io.github.clooudshiba.gateway.filter.HttpResponseFilter;
+import io.github.clooudshiba.gateway.outbound.httpclient4.NamedThreadFactory;
 import io.github.clooudshiba.gateway.outbound.utils.UrlUtils;
 import io.github.clooudshiba.gateway.router.HttpEndpointRouter;
 import io.github.clooudshiba.gateway.router.RandomHttpEndpointRouter;
@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 import static io.netty.handler.codec.http.HttpResponseStatus.NO_CONTENT;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
@@ -33,6 +33,7 @@ public class OkhttpOutboundHandler {
     private static final int connectTimeoutSecond = 1;
     private static final int readTimeoutSecond = 3;
 
+    private ExecutorService proxyService;
     private List<String> backendUrls;
     private final OkHttpClient client = new OkHttpClient.Builder()
             .connectTimeout(connectTimeoutSecond, TimeUnit.SECONDS)
@@ -46,13 +47,21 @@ public class OkhttpOutboundHandler {
     public OkhttpOutboundHandler(List<String> backends) {
         this.backendUrls = UrlUtils.getUrls(backends);
         logger.info("backendUrls: {}", backendUrls);
+
+        int cores = Runtime.getRuntime().availableProcessors();
+        long keepAliveTime = 1000;
+        int queueSize = 2048;
+        RejectedExecutionHandler handler = new ThreadPoolExecutor.CallerRunsPolicy();//.DiscardPolicy();
+        proxyService = new ThreadPoolExecutor(cores, cores,
+                keepAliveTime, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(queueSize),
+                new NamedThreadFactory("proxyService"), handler);
     }
 
     public void handle(final FullHttpRequest fullRequest, final ChannelHandlerContext ctx, HttpRequestFilter filter) {
         String backendUrl = router.route(this.backendUrls);
         final String url = backendUrl + fullRequest.uri();
         filter.filter(fullRequest, ctx);
-        fetchGet(fullRequest, ctx, url);
+        proxyService.submit(()->fetchGet(fullRequest, ctx, url));
     }
 
     private void fetchGet(final FullHttpRequest inbound, final ChannelHandlerContext ctx, final String url) {
