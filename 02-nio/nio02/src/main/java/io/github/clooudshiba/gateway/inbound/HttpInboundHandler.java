@@ -3,6 +3,7 @@ package io.github.clooudshiba.gateway.inbound;
 import io.github.clooudshiba.gateway.filter.HttpRequestFilter;
 import io.github.clooudshiba.gateway.filter.HeaderHttpRequestFilter;
 import io.github.clooudshiba.gateway.outbound.httpclient4.HttpOutboundHandler;
+import io.github.clooudshiba.gateway.outbound.okhttp.OkhttpOutboundHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.FullHttpRequest;
@@ -16,12 +17,14 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
 
     private static Logger logger = LoggerFactory.getLogger(HttpInboundHandler.class);
     private final List<String> proxyServer;
-    private HttpOutboundHandler handler;
+//    private HttpOutboundHandler handler;
+    private OkhttpOutboundHandler handler;
     private HttpRequestFilter filter = new HeaderHttpRequestFilter();
     
     public HttpInboundHandler(List<String> proxyServer) {
         this.proxyServer = proxyServer;
-        this.handler = new HttpOutboundHandler(this.proxyServer);
+//        this.handler = new HttpOutboundHandler(this.proxyServer);
+        this.handler = new OkhttpOutboundHandler(this.proxyServer);
     }
 
     @Override

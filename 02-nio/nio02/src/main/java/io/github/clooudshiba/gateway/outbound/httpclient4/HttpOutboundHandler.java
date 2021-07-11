@@ -3,6 +3,7 @@ package io.github.clooudshiba.gateway.outbound.httpclient4;
 
 import io.github.clooudshiba.gateway.filter.HeaderHttpResponseFilter;
 import io.github.clooudshiba.gateway.filter.HttpRequestFilter;
+import io.github.clooudshiba.gateway.outbound.utils.UrlUtils;
 import io.github.clooudshiba.gateway.router.HttpEndpointRouter;
 import io.github.clooudshiba.gateway.router.RandomHttpEndpointRouter;
 import io.github.clooudshiba.gateway.filter.HttpResponseFilter;
@@ -40,8 +41,7 @@ public class HttpOutboundHandler {
     HttpEndpointRouter router = new RandomHttpEndpointRouter();
 
     public HttpOutboundHandler(List<String> backends) {
-
-        this.backendUrls = backends.stream().map(this::formatUrl).collect(Collectors.toList());
+        this.backendUrls = UrlUtils.getUrls(backends);
 
         int cores = Runtime.getRuntime().availableProcessors();
         long keepAliveTime = 1000;
@@ -66,10 +66,6 @@ public class HttpOutboundHandler {
         httpclient.start();
     }
 
-    private String formatUrl(String backend) {
-        return backend.endsWith("/")?backend.substring(0,backend.length()-1):backend;
-    }
-    
     public void handle(final FullHttpRequest fullRequest, final ChannelHandlerContext ctx, HttpRequestFilter filter) {
         String backendUrl = router.route(this.backendUrls);
         final String url = backendUrl + fullRequest.uri();
@@ -156,6 +152,4 @@ public class HttpOutboundHandler {
         cause.printStackTrace();
         ctx.close();
     }
-    
-    
 }

@@ -18,6 +18,7 @@ public class HttpServer01 {
         while (true) {
             try {
                 Socket socket = serverSocket.accept();
+                System.out.println("socket " + socket);
                 service(socket);
             } catch (IOException e) {
                 e.printStackTrace();
