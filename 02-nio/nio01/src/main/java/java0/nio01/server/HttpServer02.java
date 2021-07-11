@@ -17,6 +17,7 @@ public class HttpServer02 {
         while (true) {
             try {
                 final Socket socket = serverSocket.accept();
+                System.out.println("socket " + socket);
                 new Thread(() -> {
                     service(socket);
                 }).start();
