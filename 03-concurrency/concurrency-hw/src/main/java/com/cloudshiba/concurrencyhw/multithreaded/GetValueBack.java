@@ -28,6 +28,8 @@ public class GetValueBack {
         int completeFutureResult = CompletableFutureHandler.getResult(sum());
         // 使用 FutureTask
         int futureTaskResult = FutureTaskHandler.getResult(CORE_POOL_SIZE, new SumTask(), FUTURE_DELAY_MILLISECONDS);
+        // TODO 使用 CountDownLatch
+        // TODO 使用 CyclicBarrier
 
         // 确保  拿到result 并输出
         System.out.println("ScheduledThreadPoolHandler Result: " + scheduledThreadPoolResult);
