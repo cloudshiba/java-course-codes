@@ -10,4 +10,4 @@
 [02-nio/nio02](./02-nio/nio02/)
 
 ## Week 4
-[03-concurrency](./03-concurrency)
+[03-concurrency](./03-concurrency/concurrency-hw/)
