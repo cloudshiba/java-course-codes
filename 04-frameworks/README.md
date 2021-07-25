@@ -52,7 +52,7 @@
 ### 作業8
 >（必做）给前面课程提供的 Student/Klass/School 实现自动配置和 Starter。
 
-- 未完成
+- [school starter](./cloudshiba-sprinb-boot-starter-school/README.md)
 
 ### 作業9
 >（选做）学习 MyBatis-generator 的用法和原理，学会自定义 TypeHandler 处理复杂类型。

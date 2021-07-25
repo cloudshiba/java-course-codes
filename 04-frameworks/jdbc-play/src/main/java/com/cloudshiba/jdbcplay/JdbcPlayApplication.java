@@ -1,5 +1,6 @@
 package com.cloudshiba.jdbcplay;
 
+import com.cloudshiba.core.School;
 import com.cloudshiba.jdbcplay.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ public class JdbcPlayApplication implements ApplicationRunner {
 	private BatchProcessingService batchProcessingService;
 	@Autowired
 	private HikaricpDataSourceService hikaricpDataSourceService;
+	@Autowired
+	private School school;
 
 	public static void main(String[] args) {
 		SpringApplication.run(JdbcPlayApplication.class, args);
@@ -45,6 +48,8 @@ public class JdbcPlayApplication implements ApplicationRunner {
 
         // HikariCP 操作
 		hikaricpDataSourceService.doCrud();
+
+		log.info("school: {}", school);
 
 		log.info("ApplicationRunner Finished...");
 	}
