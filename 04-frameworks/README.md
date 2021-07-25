@@ -68,4 +68,4 @@
 > 
 > 3）配置 Hikari 连接池，改进上述操作。提交代码到 GitHub。
 
-- [作業 10-1 & 10-2](./jdbc-play/src/main/java/com/cloudshiba/jdbcplay/JdbcPlayApplication.java)
+- [Demo](./jdbc-play/src/main/java/com/cloudshiba/jdbcplay/JdbcPlayApplication.java)
