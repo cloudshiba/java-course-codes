@@ -10,9 +10,9 @@
 ### 作業2
 >（必做）写代码实现 Spring Bean 的装配，方式越多越好（XML、Annotation 都可以）, 提交到 GitHub。
 
-- [Java Annotation Config](./src/main/java/io/kimmking/beandemo/AnnotationBeanWearDemo.java)
-- [XML Config](./src/main/java/io/kimmking/beandemo/XmlBeanWearDemo.java)
-- [ComponentScan Config](./src/main/java/io/kimmking/beandemo/ComponentScanBeanWearDemo.java)
+- [Java Annotation Config](./spring01/src/main/java/io/kimmking/beandemo/AnnotationBeanWearDemo.java)
+- [XML Config](./spring01/src/main/java/io/kimmking/beandemo/XmlBeanWearDemo.java)
+- [ComponentScan Config](./spring01/src/main/java/io/kimmking/beandemo/ComponentScanBeanWearDemo.java)
 
 ### 作業3
 >（选做）实现一个 Spring XML 自定义配置，配置一组 Bean，例如：Student/Klass/School。
@@ -68,4 +68,4 @@
 > 
 > 3）配置 Hikari 连接池，改进上述操作。提交代码到 GitHub。
 
-- 未完成
+- [作業 10-1 & 10-2](./jdbc-play/src/main/java/com/cloudshiba/jdbcplay/JdbcPlayApplication.java)
