@@ -14,3 +14,6 @@
 
 ## Week 5
 [04-frameworks](./04-frameworks/README.md)
+
+## Week 6
+[05-db](./05-db/README.md)
