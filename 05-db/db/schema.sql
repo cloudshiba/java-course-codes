@@ -29,6 +29,7 @@ CREATE TABLE `ec_products` (
   `id` bigint PRIMARY KEY,
   `name` varchar(255),
   `image_url` varchar(255),
+  `description` varchar(255),
   `price` varchar(255),
   `create_time` datetime,
   `update_time` datetime
@@ -37,6 +38,7 @@ CREATE TABLE `ec_products` (
 CREATE TABLE `ec_orders` (
   `id` bigint PRIMARY KEY,
   `user_id` bigint NOT NULL,
+  `total_price` string NOT NULL,
   `create_time` datetime,
   `update_time` datetime
 );
