@@ -34,7 +34,7 @@
 ### 作業6
 >（选做）尝试自己做一个 ID 生成器（可以模拟 Seq 或 Snowflake）
 
-- 未完成
+- [自定義 SeqNo ID 產生器](./jdbc-insert-data/src/main/java/com/example/demo/util/SeqIdUtils.java)
 
 ### 作業7
 >（选做）尝试实现或改造一个非精确分页的程序
