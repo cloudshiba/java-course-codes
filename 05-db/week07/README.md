@@ -10,9 +10,9 @@
 ### 作業2
 >（必做）按自己设计的表结构，插入 100 万订单模拟数据，测试不同方式的插入效率
 
-- [Loading Data into a Table](./load_data_local_infile.png)
+- ![Loading Data into a Table](./load_data_local_infile.png)
 
-- 未完成
+- ![JDBC Batch](./jdbc_batch_preparestatement.png)
 
 ### 作業3
 >（选做）按自己设计的表结构，插入 1000 万订单模拟数据，测试不同方式的插入效
