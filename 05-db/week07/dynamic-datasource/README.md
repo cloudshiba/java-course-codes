@@ -13,4 +13,4 @@
 ## DB 環境設定
 - 建立兩個 MySQL instance
 - 個別建立名稱為 ecdemo 的 Database
-- DDL Schema 參考 [schema.sql](./src/main/resources/db/schem.sql)
+- DDL Schema 參考 [schema.sql](src/main/resources/db/schema.sql)
