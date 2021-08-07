@@ -77,6 +77,7 @@ default-character-set = utf8mb4
 個別啟動 `docker-compose up -d`
 
 查看 Primary 節點 master status
+
 ![Primary master status](./primary_master_status.png)
 
 設定 Secondary 追蹤 master 節點
