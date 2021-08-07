@@ -44,6 +44,8 @@
 ### 作業8
 >（选做）配置一遍异步复制，半同步复制、组复制
 
+- [README](./mysql-replication/mysql_replication.md)
+
 ### 作業9
 >（必做）读写分离 - 动态切换数据源版本 1.0
 
