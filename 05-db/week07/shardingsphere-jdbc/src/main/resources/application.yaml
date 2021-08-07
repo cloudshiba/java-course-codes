@@ -1,0 +1,26 @@
+spring:
+  shardingsphere:
+    datasource:
+      common:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        password: 12345678
+        type: com.zaxxer.hikari.HikariDataSource
+        username: root
+      write:
+        jdbc-url: jdbc:mysql://localhost:3306/ecdemo?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+      read:
+        jdbc-url: jdbc:mysql://localhost:3307/ecdemo?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+      names: write,read
+    rules:
+      replica-query:
+        data-sources:
+          rw:
+            load-balancer-name: round-robin
+            primary-data-source-name: write
+            replica-data-source-names: read
+        load-balancers:
+          round-robin:
+            props:
+              sql:
+                show: true
+            type: ROUND_ROBIN

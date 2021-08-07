@@ -1,0 +1,9 @@
+datasource:
+  primary:
+    url: jdbc:mysql://127.0.0.1:3306/ecdemo?useSSL=false&useUnicode=true&characterEncoding=utf-8&character_set_server=utf8mb4
+    username: root
+    password: 12345678
+  secondary:
+    url: jdbc:mysql://127.0.0.1:3307/ecdemo?useSSL=false&useUnicode=true&characterEncoding=utf-8&character_set_server=utf8mb4
+    username: root
+    password: 12345678
