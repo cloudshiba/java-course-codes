@@ -6,6 +6,7 @@
 - ### Secondary DataSource: 主要讀取的 DB
 
 ## 動態切換 DataSource
+- 設定 [`DataSourceRouting`](./src/main/java/com/clooudshiba/dynamicdatasource/datasource/DataSourceRouting.java) 透過 `AbstractRoutingDataSource#determineCurrentLookupKey` 尋找 DataSource Routing
 - 自定義 [`TargetDataSource`](./src/main/java/com/clooudshiba/dynamicdatasource/datasource/TargetDataSource.java)，依據參數 `PRIMARY` 或 `SECONDARY` 設定使用的 DataSource
 - 自定義 [`DynamicDataSourceChangeAspect`](./src/main/java/com/clooudshiba/dynamicdatasource/datasource/DynamicDataSourceChangeAspect.java)，透過 AOP 機制動態切換 DataSource
 
