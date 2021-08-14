@@ -33,6 +33,13 @@ public class ShardingsphereproxyApplication implements ApplicationRunner {
 
 		EcOrder orderRecord = ecOrderService.create(order);
 		log.info("Create new order: {}", orderRecord);
+		userId = 2;
+		EcOrder newUserOrder = EcOrder.builder()
+				.userId(userId)
+				.totalPrice(totalPrice)
+				.build();
+		EcOrder newUserOrderRecord = ecOrderService.create(newUserOrder);
+		log.info("Create new user order: {}", newUserOrderRecord);
 
 		List<EcOrder> orders = ecOrderService.findAll();
 		log.info("Find all orders: {}", orders);
@@ -40,9 +47,7 @@ public class ShardingsphereproxyApplication implements ApplicationRunner {
 		Optional<EcOrder> orderOptional = ecOrderService.findOne(orderRecord.getOrderId());
 		log.info("Find one order: {}", orderOptional.get());
 
-		long newUserId = 2;
 		BigDecimal newTotalPrice = new BigDecimal(66.66);
-		orderRecord.setUserId(newUserId);
 		orderRecord.setTotalPrice(newTotalPrice);
 		EcOrder newOrderRecord = ecOrderService.update(orderRecord);
 		log.info("Update order: {}", newOrderRecord);

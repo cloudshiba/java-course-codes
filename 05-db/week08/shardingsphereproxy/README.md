@@ -9,5 +9,6 @@
 ## Sharding-Proxy config
 - [server.yaml](./shardingsphere-proxy-conf/server.yaml)
 - [config-sharding.yaml](./shardingsphere-proxy-conf/config-sharding.yaml)
-- Sharding-Proxy 跑在 local 3307 port 
-
+- 下載 [MySQL-connect.jar](https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.47/mysql-connector-java-5.1.47.jar)
+- 使用 [Docker](./shardingsphere-proxy-conf/docker-compose.yml) 啟動 Sharding-Proxy
+- Sharding-Proxy 跑在 local 3308 port 

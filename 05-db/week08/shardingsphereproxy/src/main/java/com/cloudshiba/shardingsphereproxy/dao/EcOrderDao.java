@@ -3,6 +3,8 @@ package com.cloudshiba.shardingsphereproxy.dao;
 import com.cloudshiba.shardingsphereproxy.entity.EcOrder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -17,9 +19,11 @@ import java.util.Optional;
 @Repository @Slf4j
 public class EcOrderDao {
     private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public EcOrderDao(JdbcTemplate jdbcTemplate) {
+    public EcOrderDao(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
     public List<EcOrder> findAll() {
@@ -29,9 +33,12 @@ public class EcOrderDao {
     }
 
     public Optional<EcOrder> findOne(Long orderId) {
-        StringBuffer sql = new StringBuffer("SELECT * FROM ec_orders where order_id = ?");
+        StringBuffer sql = new StringBuffer("SELECT * FROM ec_orders where order_id = :orderId");
+        MapSqlParameterSource params =
+                new MapSqlParameterSource()
+                        .addValue("orderId", orderId);
 
-        EcOrder order = jdbcTemplate.queryForObject(sql.toString(), this::mapRowToEcOrder, orderId);
+        EcOrder order = namedParameterJdbcTemplate.queryForObject(sql.toString(), params, this::mapRowToEcOrder);
         return Optional.ofNullable(order);
     }
 
@@ -59,8 +66,8 @@ public class EcOrderDao {
     }
 
     public EcOrder update(EcOrder order) {
-        StringBuffer sql = new StringBuffer("UPDATE ec_orders SET user_id = ?, total_price = ?, update_time = ? where order_id = ?");
-        jdbcTemplate.update(sql.toString(), order.getUserId(), order.getTotalPrice(), System.currentTimeMillis(), order.getOrderId());
+        StringBuffer sql = new StringBuffer("UPDATE ec_orders SET total_price = ?, update_time = ? where order_id = ?");
+        jdbcTemplate.update(sql.toString(), order.getTotalPrice(), System.currentTimeMillis(), order.getOrderId());
 
         return order;
     }
@@ -71,7 +78,7 @@ public class EcOrderDao {
         return jdbcTemplate.update(sql.toString(), orderId) > 0;
     }
 
-    private EcOrder mapRowToEcOrder(ResultSet resultSet, int rowNum) throws SQLException {
+    private EcOrder mapRowToEcOrder(ResultSet resultSet, int rowNum)  throws SQLException {
         return EcOrder.builder()
                 .orderId(resultSet.getLong("order_id"))
                 .userId(resultSet.getLong("user_id"))
