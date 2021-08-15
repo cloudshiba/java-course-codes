@@ -8,3 +8,8 @@
 
 - [README](./shardingsphereproxy/README.md)
 
+### 作業2 (必做)
+> 基于 hmily TCC 或 ShardingSphere 的 Atomikos XA 实现一个简单的分布式事务应用 demo（二选一），提交到 Github。
+
+- [README](./hmily-tcc-demo/README.md)
+
