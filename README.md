@@ -20,3 +20,6 @@
 
 ## Week 7
 [README](./05-db/week07/README.md)
+
+## Week 8
+[README](./05-db/week08/README.md)

@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  sharding-proxy:
+    image: apache/sharding-proxy:5.0.0-alpha
+    container_name: sharding-proxy
+    ports:
+      - "3308:3307"
+    volumes:
+      - ./conf:/opt/sharding-proxy/conf
+      - ./lib:/opt/sharding-proxy/lib

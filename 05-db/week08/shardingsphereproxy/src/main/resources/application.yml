@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3308/sharding_db?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&character_set_server=utf8mb4
+#    url: jdbc:mysql://localhost:3306/ec_demo?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&character_set_server=utf8mb4
+    username: root
+    password: 12345678
+    hikari:
+      connection-init-sql: SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;
+      data-source-properties:
+        cachePrepStmts: true
+        cacheResultSetMetadata: true
+        cacheServerConfiguration: true
+        elideSetAutoCommits: true
+        logSlowQueries: true
+        maintainTimeStats: false
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        rewriteBatchedStatements: true
+        useServerPrepStmts: true
+        useLocalSessionState: true
