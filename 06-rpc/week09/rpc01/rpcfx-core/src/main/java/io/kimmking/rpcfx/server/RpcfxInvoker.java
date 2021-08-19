@@ -5,11 +5,14 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import io.kimmking.rpcfx.api.RpcfxRequest;
 import io.kimmking.rpcfx.api.RpcfxResolver;
 import io.kimmking.rpcfx.api.RpcfxResponse;
+import io.kimmking.rpcfx.exception.RpcfxException;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+@Slf4j
 public class RpcfxInvoker {
 
     private RpcfxResolver resolver;
@@ -23,7 +26,17 @@ public class RpcfxInvoker {
         String serviceClass = request.getServiceClass();
 
         // 作业1：改成泛型和反射
-        Object service = resolver.resolve(serviceClass);//this.applicationContext.getBean(serviceClass);
+        Class klass = null;
+        try {
+            klass = Class.forName(serviceClass);
+        } catch (ClassNotFoundException e) {
+            log.error("{}", e.getMessage());
+            response.setException(new RpcfxException(e));
+            response.setStatus(false);
+            return response;
+        }
+
+        Object service = resolver.resolve(klass);
 
         try {
             Method method = resolveMethodFromClass(service.getClass(), request.getMethod());
@@ -39,7 +52,7 @@ public class RpcfxInvoker {
             // 2.封装一个统一的RpcfxException
             // 客户端也需要判断异常
             e.printStackTrace();
-            response.setException(e);
+            response.setException(new RpcfxException(e));
             response.setStatus(false);
             return response;
         }
