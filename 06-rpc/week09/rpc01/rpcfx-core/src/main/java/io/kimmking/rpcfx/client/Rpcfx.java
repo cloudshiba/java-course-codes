@@ -4,6 +4,11 @@ package io.kimmking.rpcfx.client;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.ParserConfig;
 import io.kimmking.rpcfx.api.*;
+import io.kimmking.rpcfx.exception.RpcfxException;
+import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.implementation.InvocationHandlerAdapter;
+import net.bytebuddy.matcher.ElementMatchers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -11,16 +16,21 @@ import okhttp3.RequestBody;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 public final class Rpcfx {
 
     static {
         ParserConfig.getGlobalInstance().addAccept("io.kimmking");
     }
+
+    private static final ConcurrentHashMap serviceObjectMap = new ConcurrentHashMap();
 
     public static <T, filters> T createFromRegistry(final Class<T> serviceClass, final String zkUrl, Router router, LoadBalancer loadBalance, Filter filter) {
 
@@ -42,8 +52,32 @@ public final class Rpcfx {
     public static <T> T create(final Class<T> serviceClass, final String url, Filter... filters) {
 
         // 0. 替换动态代理 -> 字节码生成
-        return (T) Proxy.newProxyInstance(Rpcfx.class.getClassLoader(), new Class[]{serviceClass}, new RpcfxInvocationHandler(serviceClass, url, filters));
+//        return (T) Proxy.newProxyInstance(Rpcfx.class.getClassLoader(), new Class[]{serviceClass}, new RpcfxInvocationHandler(serviceClass, url, filters));
 
+        try {
+            T result = (T) serviceObjectMap.putIfAbsent(serviceClass, createByteBuddyDynamicProxy(serviceClass, url));
+            if (result == null) {
+                result = (T) serviceObjectMap.get(serviceClass);
+            }
+            return result;
+        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
+            log.error("{}", e.getMessage());
+            throw new RpcfxException(e);
+        }
+    }
+
+    private static <T> Object createByteBuddyDynamicProxy(Class<T> serviceClass, String url)
+            throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException
+    {
+        return (T) new ByteBuddy().subclass(Object.class)
+                .implement(serviceClass)
+                .method(ElementMatchers.any())
+                .intercept(InvocationHandlerAdapter.of(new Rpcfx.ServiceInvocationHandler(serviceClass, url)))
+                .make()
+                .load(Rpcfx.class.getClassLoader())
+                .getLoaded()
+                .getDeclaredConstructor()
+                .newInstance();
     }
 
     public static class RpcfxInvocationHandler implements InvocationHandler {
@@ -108,6 +142,32 @@ public final class Rpcfx {
             String respJson = client.newCall(request).execute().body().string();
             System.out.println("resp json: "+respJson);
             return JSON.parseObject(respJson, RpcfxResponse.class);
+        }
+    }
+
+    private static class ServiceInvocationHandler implements InvocationHandler {
+        public static final MediaType JSONTYPE = MediaType.get("application/json; charset=utf-8");
+        private final Class<?> serviceClass;
+        private final String url;
+
+        public ServiceInvocationHandler(Class<?> serviceClass, String url) {
+            this.serviceClass = serviceClass;
+            this.url = url;
+        }
+
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] params) throws Throwable {
+            RpcfxRequest request = new RpcfxRequest();
+            request.setServiceClass(this.serviceClass.getName());
+            request.setMethod(method.getName());
+            request.setParams(params);
+
+            // 使用 Netty client
+            RpcfxResponse response = NettyRpcClient.rpcCall(request, url);
+            if (!response.isStatus()) {
+                throw new Throwable(response.getException());
+            }
+            return JSON.parse(response.getResult().toString());
         }
     }
 }
