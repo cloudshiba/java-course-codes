@@ -23,3 +23,7 @@
 
 ## Week 8
 [README](./05-db/week08/README.md)
+
+## Week 9
+[README](./06-rpc/week09/README.md)
+

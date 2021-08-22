@@ -1,0 +1,59 @@
+schemaName: account_db
+
+dataSourceCommon:
+  username: root
+  password: 12345678
+  connectionTimeoutMilliseconds: 30000
+  idleTimeoutMilliseconds: 60000
+  maxLifetimeMilliseconds: 1800000
+  maxPoolSize: 50
+  minPoolSize: 1
+  maintenanceIntervalMilliseconds: 30000
+
+dataSources:
+  db0:
+    url: jdbc:mysql://127.0.0.1:3306/accountdb0?serverTimezone=UTC&useSSL=false
+  db1:
+    url: jdbc:mysql://127.0.0.1:3306/accountdb1?serverTimezone=UTC&useSSL=false
+
+rules:
+  - !SHARDING
+    tables:
+      t_cny_account:
+        actualDataNodes: db${0..1}.t_cny_account
+        keyGenerateStrategy:
+          column: id
+          keyGeneratorName: snowflake
+      t_cny_freeze:
+        actualDataNodes: db${0..1}.t_cny_freeze
+        keyGenerateStrategy:
+          column: id
+          keyGeneratorName: snowflake
+      t_usd_account:
+        actualDataNodes: db${0..1}.t_usd_account
+        keyGenerateStrategy:
+          column: id
+          keyGeneratorName: snowflake
+      t_usd_freeze:
+        actualDataNodes: db${0..1}.t_usd_freeze
+        keyGenerateStrategy:
+          column: id
+          keyGeneratorName: snowflake
+    defaultDatabaseStrategy:
+      standard:
+        shardingColumn: user_id
+        shardingAlgorithmName: database_inline
+    defaultTableStrategy:
+      none:
+
+    shardingAlgorithms:
+      database_inline:
+        type: INLINE
+        props:
+          algorithm-expression: db${user_id % 2}
+
+    keyGenerators:
+      snowflake:
+        type: SNOWFLAKE
+        props:
+          worker-id: 123
