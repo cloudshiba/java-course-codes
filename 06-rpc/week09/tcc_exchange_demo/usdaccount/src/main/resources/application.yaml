@@ -1,0 +1,25 @@
+dubbo:
+  application:
+    name: usdaccount-service
+  consumer:
+    timeout: 100000
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: zookeeper://127.0.0.1:2181
+hmily:
+  support:
+    rpc:
+      annotation: true
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+server:
+  port: 9012
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3307/account_db?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: 12345678
