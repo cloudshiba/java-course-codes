@@ -7,6 +7,7 @@
 @Configuration
 public class ActiveConfig {
     public static final String QUEUE_NAME = "my.queue";
+    public static final String TOPIC_NAME = "my.topic";
 
     // 建立一個隊列
     @Bean
