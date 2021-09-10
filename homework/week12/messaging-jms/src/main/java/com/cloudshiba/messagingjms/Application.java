@@ -20,6 +20,7 @@ public class Application {
         for (int i = 0; i < 100; i++) {
             System.out.println("生產訊息 " + i);
             sender.send("Hello, this is message count " + i);
+            sender.sendTopic("send topic " + i);
         }
         stopWatch.stop();
         System.out.println("發送消息耗時：" + stopWatch.getTotalTimeMillis());
