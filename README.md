@@ -35,3 +35,6 @@
 ## Week 12
 [README](./homework/week12/README.md)
 
+## Week 13
+[README](./homework/week13/README.md)
+
